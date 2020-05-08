@@ -1,45 +1,19 @@
 <div class="container mt-4">
   <h1 class="mb-4 text-primary">Cinema App</h1>
 
-  <!--<ul>-->
-  <!--  <li *ngFor="let movie of movies; let i = index">-->
-  <!--    <div *ngIf="i % 2 === 0">-->
-  <!--      {{i}}. {{movie.title}}, director: {{movie.director}}-->
-  <!--    </div>-->
-  <!--  </li>-->
-  <!--</ul>-->
+  <h3 class="mb-4 text-primary text-center">Movies Table View</h3>
+  <app-movies-table></app-movies-table>
 
-  <div class="d-flex mb-4">
-    <div class="mr-2">
-      <input class="form-control" type="text" [(ngModel)]="movieInput">
-      <p *ngIf="movieInput">You select: {{movieInput}}</p>
-    </div>
+  <hr>
 
-    <button type="button"
-            class="btn btn-outline-primary"
-            [disabled]="!movieInput"
-            (click)="onAddClick()">Add</button>
-  </div>
+  <h3 class="mb-4 text-primary text-center">Movies Cards View</h3>
+  <app-movies-cards-list></app-movies-cards-list>
 
-  <p *ngIf="showError" [class.text-danger]="showError">You cannot empty string for name.</p>
+  <hr>
 
-  <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Title</th>
-      <th scope="col">Director</th>
-      <th scope="col">Rating</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let movie of movies; let i = index">
-      <th scope="row">{{i + 1}}</th>
-      <td [class.text-muted]="movie.rating > 6">{{movie.title}}</td>
-      <td [class.text-muted]="movie.rating > 6">{{movie.director}}</td>
-      <td [ngClass]="{'text-danger': movie.rating > 6}"
-          [ngStyle]="{'color': movie.rating < 6 ? 'blue' : 'orange'}">{{movie.rating}}</td>
-    </tr>
-    </tbody>
-  </table>
+<!--  <h4 class="text-warning text-center">Add movie using Template Driven Approach</h4>-->
+<!--  <app-movie-td-form></app-movie-td-form>-->
+
+  <h4 class="text-warning text-center">Add movie using Reactive Approach</h4>
+  <app-movie-reactive-form></app-movie-reactive-form>
 </div>
