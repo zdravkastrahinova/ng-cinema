@@ -1,5 +1,9 @@
 <div class="row">
   <div class="col-md-12">
+    <h4>{{movie.id ? 'Update' : 'Add'}} movie</h4>
+  </div>
+
+  <div class="col-md-12">
     <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
 
       <div class="form-group">

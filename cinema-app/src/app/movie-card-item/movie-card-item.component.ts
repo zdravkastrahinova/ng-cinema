@@ -11,6 +11,7 @@ export class MovieCardItemComponent {
   @Input() movie: Movie;
 
   @Output() movieSelected = new EventEmitter<string>();
+  @Output() movieDeleted = new EventEmitter<number>();
 
   constructor() {
     this.movie = {
@@ -30,5 +31,9 @@ export class MovieCardItemComponent {
 
   onSelectClick(): void {
     this.movieSelected.emit(this.movie.title);
+  }
+
+  onDeleteClick(): void {
+    this.movieDeleted.emit(this.movie.id);
   }
 }
