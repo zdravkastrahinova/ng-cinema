@@ -6,5 +6,7 @@
     <p class="card-text">{{ getDescription() }}</p>
 
     <button class="btn btn-primary" (click)="onSelectClick()">Select</button>
+    <a class="btn btn-outline-success ml-2" [routerLink]="['/movie-add', movie.id]">Update</a>
+    <button class="btn btn-outline-warning ml-2" (click)="onDeleteClick()">Delete</button>
   </div>
 </div>

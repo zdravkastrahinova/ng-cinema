@@ -1,63 +1,74 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {Movie} from '../movie.interface';
+import {MoviesService} from '../services/movies.service';
 
 @Component({
   selector: 'app-movies-cards-list',
   templateUrl: './movies-cards-list.component.html',
   styleUrls: ['./movies-cards-list.component.scss']
 })
-export class MoviesCardsListComponent {
+export class MoviesCardsListComponent implements OnInit, OnDestroy {
 
+  movies: Movie[];
   selectedMovieTitle: string;
 
-  movies: Movie[] = [
-    {
-      title: 'Trolls World Tour',
-      description: 'When the Queen of the Hard Rock Trolls tries to take over all the Troll kingdoms, Queen Poppy and her friends try different ways to save all the Trolls.',
-      director: 'Walt Dohrn',
-      rating: 6.1,
-      imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTI5NmViY2YtNDk5NC00NjY2LWFlNGYtOGEwNzY1MTZmMjFmXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_UX182_CR0,0,182,268_AL_.jpg'
-    },
-    {
-      title: 'Dune',
-      description: 'Feature adaptation of Frank Herbert\'s science fiction novel, about the son of a noble family entrusted with the protection of the most valuable asset and most vital element in the galaxy.',
-      director: 'Denis Villeneuve',
-      rating: 5.3,
-      imageUrl: 'https://m.media-amazon.com/images/M/MV5BZTBmMmVhYmMtNmI4MC00MGIzLWJhNmEtZDAyZjFiNjU5NzYzXkEyXkFqcGdeQXVyNTQ5OTI3MzM@._V1_UY268_CR9,0,182,268_AL_.jpg'
-    },
-    {
-      title: 'Code 8',
-      description: 'A super-powered construction worker falls in with a group of criminals in order to raise the funds to help his ill mother.',
-      director: 'Jeff Chan',
-      rating: 6.1,
-      imageUrl: 'https://m.media-amazon.com/images/M/MV5BNmQ2NWMyZDgtNWQ5My00ZmQwLWE0MTQtN2ZiNjY2ODc0Y2YxXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX182_CR0,0,182,268_AL_.jpg'
-    },
-    {
-      title: 'The Gentlemen',
-      description: 'An American expat tries to sell off his highly profitable marijuana empire in London, triggering plots, schemes, bribery and blackmail in an attempt to steal his domain out from under him.',
-      director: 'Guy Ritchie',
-      rating: 8,
-      imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTlkMmVmYjktYTc2NC00ZGZjLWEyOWUtMjc2MDMwMjQwOTA5XkEyXkFqcGdeQXVyNTI4MzE4MDU@._V1_UX182_CR0,0,182,268_AL_.jpg'
-    },
-    {
-      title: 'The Platform',
-      description: 'A vertical prison with one cell per level. Two people per cell. One only food platform and two minutes per day to feed from up to down. An endless nightmare trapped in The Hole.',
-      director: 'Galder Gaztelu-Urrutia',
-      rating: 7,
-      imageUrl: 'https://m.media-amazon.com/images/M/MV5BOTMyYTIyM2MtNjQ2ZC00MWFkLThhYjQtMjhjMGZiMjgwYjM2XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX182_CR0,0,182,268_AL_.jpg'
-    },
-    {
-      title: 'The Platform #2',
-      description: 'A vertical prison with one cell per level. Two people per cell. One only food platform and two minutes per day to feed from up to down. An endless nightmare trapped in The Hole.',
-      director: 'Galder Gaztelu-Urrutia',
-      rating: 7,
-      imageUrl: 'https://m.media-amazon.com/images/M/MV5BOTMyYTIyM2MtNjQ2ZC00MWFkLThhYjQtMjhjMGZiMjgwYjM2XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX182_CR0,0,182,268_AL_.jpg'
-    }
-  ];
+  formGroup: FormGroup;
 
-  constructor() { }
+  destroy$ = new Subject<boolean>();
+
+  constructor(private moviesService: MoviesService,
+              private fb: FormBuilder) {
+  }
+
+  ngOnInit(): void {
+    this.getMovies();
+
+    this.formGroup = this.fb.group({
+      search: ['']
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
 
   onMovieSelected(title: string): void {
     this.selectedMovieTitle = title;
+  }
+
+  onSearch(): void {
+    // get title from form
+    const searchValue = this.formGroup.controls.search.value;
+
+    this.getMovies(searchValue);
+  }
+
+  onClearSearch(): void {
+    this.formGroup.get('search').setValue(null);
+
+    this.getMovies();
+  }
+
+  onDelete(id: number): void {
+    this.moviesService.deleteMovie(id).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.getMovies();
+    });
+  }
+
+  private getMovies(searchValue?: string): void {
+    this.moviesService.getMovies(searchValue).pipe(
+      // map(response => response.filter(x => x.rating > 7)),
+      takeUntil(this.destroy$)
+    ).subscribe(response => {
+      this.movies = response;
+    }, error => {
+      console.log(error);
+    });
   }
 }
