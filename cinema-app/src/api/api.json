@@ -1,4 +1,25 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin Admin",
+      "email": "admin@admin.com",
+      "password": "qwerty"
+    },
+    {
+      "id": 2,
+      "name": "John Doe",
+      "email": "john@doe.bg",
+      "password": "qwerty"
+    },
+    {
+      "name": "Zdravka Strahinova",
+      "email": "zdravkastrahinova1022@gmail.com",
+      "password": "123456",
+      "rePassword": "123456",
+      "id": 3
+    }
+  ],
   "movies": [
     {
       "id": 1,
