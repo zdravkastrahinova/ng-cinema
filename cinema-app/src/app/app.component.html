@@ -5,13 +5,14 @@
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-    <ul class="navbar-nav">
+  <div class="collapse navbar-collapse" id="navbarNav"
+       [ngClass]="hasLoggedUser ? 'justify-content-between' : 'justify-content-end'">
+    <ul class="navbar-nav" *ngIf="hasLoggedUser">
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/movies-table-list">Table View</a>
+        <a class="nav-link" routerLink="/movies/movies-table-list">Table View</a>
       </li>
-      <li class="nav-item" *ngIf="hasLoggedUser">
-        <a class="nav-link" [routerLink]="'/movies-card-list'">Cards View</a>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/movies/movies-card-list'">Cards View</a>
       </li>
     </ul>
 
@@ -22,7 +23,7 @@
 
       <a *ngIf="!hasLoggedUser"
          class="btn btn-link"
-         routerLink="/login">Login</a>
+         routerLink="auth/login">Login</a>
     </span>
   </div>
 </nav>

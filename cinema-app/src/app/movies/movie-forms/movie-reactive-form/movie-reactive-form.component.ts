@@ -68,7 +68,7 @@ export class MovieReactiveFormComponent implements OnInit, OnDestroy {
     this.formGroup = this.fb.group({
       id: [this.movie.id],
       title: [this.movie.title, [Validators.required, Validators.minLength(5)]],
-      description: [this.movie.description],
+      description: [this.movie.description, [Validators.required]],
       director: [this.movie.director],
       rating: [this.movie.rating],
       imageUrl: [this.movie.imageUrl]
