@@ -14,14 +14,7 @@
                placeholder="Enter title..."
                formControlName="title">
 
-        <small *ngIf="formGroup.get('title').touched && formGroup.get('title').invalid && formGroup.get('title').errors.required"
-               class="text-danger">This field is required.</small>
-
-        <small *ngIf="formGroup.get('title').touched && formGroup.get('title').invalid && formGroup.get('title').errors.minlength"
-               class="text-danger">
-          This field includes {{formGroup.get('title').errors.minlength.actualLength}} characters.
-          This field should contain at least {{formGroup.get('title').errors.minlength.requiredLength}} characters.
-        </small>
+        <app-field-error-message [control]="formGroup.get('title')"></app-field-error-message>
 
       </div>
 
@@ -32,6 +25,8 @@
                id="description"
                placeholder="Enter description..."
                formControlName="description">
+
+        <app-field-error-message [control]="formGroup.get('description')"></app-field-error-message>
       </div>
 
       <div class="form-group">

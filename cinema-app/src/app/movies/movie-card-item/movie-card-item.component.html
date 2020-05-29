@@ -2,8 +2,18 @@
   <img class="card-img-top" [src]="movie.imageUrl" [alt]="movie.title">
 
   <div class="card-body">
-    <h5 class="card-title">{{ movie.title }}</h5>
-    <p class="card-text">{{ getDescription() }}</p>
+    <h5 class="card-title">{{ movie.title | format}}</h5>
+    <p class="card-text">{{ movie.description | format: 100 }}</p>
+
+    <div>
+      <div>
+        <span>Rating: {{movie.rating | number: '1.1-2'}}</span>
+      </div>
+
+      <div>
+        <span>Created at: {{movie.createdDate | date}}</span>
+      </div>
+    </div>
 
     <button class="btn btn-primary" (click)="onSelectClick()">Select</button>
     <a class="btn btn-outline-success ml-2" [routerLink]="['/movie-add', movie.id]">Update</a>

@@ -5,4 +5,5 @@ export interface Movie {
   director: string;
   rating: number;
   imageUrl?: string;
+  createdDate?: Date;
 }

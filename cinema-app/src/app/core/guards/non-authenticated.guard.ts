@@ -1,20 +1,20 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, Router} from '@angular/router';
-import {AuthenticationService} from '../services/authentication.service';
+import {CanLoad, Router} from '@angular/router';
+import {AuthenticationService} from '../../auth/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NonAuthenticatedGuard implements CanActivate {
+export class NonAuthenticatedGuard implements CanLoad {
 
   constructor(private authService: AuthenticationService,
               private router: Router) {
   }
 
-  canActivate(): boolean {
+  canLoad(): boolean {
     const user = this.authService.getLoggedUser();
     if (user) {
-      this.router.navigate(['movies-card-list']);
+      this.router.navigate(['movies/movies-card-list']);
 
       return false;
     }
