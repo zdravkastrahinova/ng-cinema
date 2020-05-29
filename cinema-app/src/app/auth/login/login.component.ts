@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.authService.setLoggedUser(response);
 
       // redirect to main app
-      this.router.navigate(['movies-card-list']);
+      this.router.navigate(['movies/movies-card-list']);
     });
   }
 

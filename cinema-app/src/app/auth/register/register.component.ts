@@ -5,6 +5,7 @@ import {map, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {User} from '../models/user.interface';
 import {Router} from '@angular/router';
+import {FormValidators} from '../validators/form.validators';
 
 @Component({
   selector: 'app-register',
@@ -30,21 +31,6 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     // check for password mismatch
     const formData = this.form.value;
-    if (formData.password !== formData.rePassword) {
-      this.errorMessage = 'Passwords do not match.';
-
-      // this.form.get('password').setValue('');
-      // this.form.get('rePassword').setValue('');
-
-      this.form.reset({
-        name: formData.name,
-        email: formData.email,
-        password: '',
-        rePassword: ''
-      });
-
-      return;
-    }
 
     // getAllUsers -> check if email exists
     this.authService.getUsers().pipe(
@@ -60,7 +46,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(this.form.value).pipe(
         takeUntil(this.destroy$)
       ).subscribe(response => {
-        this.router.navigate(['login']);
+        this.router.navigate(['auth/login']);
       });
     });
   }
@@ -70,7 +56,11 @@ export class RegisterComponent implements OnInit {
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(5)]],
-      rePassword: ['', [Validators.required, Validators.minLength(5)]]
+      rePassword: ['', [
+        Validators.required,
+        Validators.minLength(5),
+        FormValidators.equalPasswordsValidator(this.form?.controls?.password.value)]
+      ]
     });
   }
 }
